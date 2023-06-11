@@ -11,18 +11,18 @@ blockchain = BS.Blockchain()
 @app.route('/chain', methods=['GET'])
 def get_chain():
     data = request.json
+    private_key = data['private_key']
     chain_data = []
     for block in blockchain.transaction:
-        data = block.get_data_author(data['private_key'])
+        data = block.get_data_author(private_key)
         print(type(data))
         if block.data_book:
-            chain_data.append([data, block.data_book])
+            chain_data.append(["Data Author: "+str(data), "Data Book: "+str(block.data_book)])
         else:
-            chain_data.append([data, 'empty'])
+            chain_data.append(["Data Author: "+str(data), 'Data Book: empty'])
 
     return json.dumps({"length": len(chain_data),
-                       "Data Author": chain_data[0][0],
-                       "Data Book":chain_data[0][1] })
+                       "Data ": chain_data})
 
 @app.route('/add_transaksi', methods=['GET'])
 def transaction_to():
